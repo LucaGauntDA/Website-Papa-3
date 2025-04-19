@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      margin: 20px;
+      z-index: 9999;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+
+    #scrollTopBtn:hover {
+      background-color: #cccccc;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+  </style>
+</head>
+<body>
+  <button id="scrollTopBtn" title="Nach oben">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 8l-6 6h12z"/>
+    </svg>
+  </button>
+
+  <script>
+    const scrollBtn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("message", (event) => {
+      if (event.data === "show") {
+        scrollBtn.style.display = "flex";
+      } else if (event.data === "hide") {
+        scrollBtn.style.display = "none";
+      } else if (event.data === "scrollToTop") {
+        parent.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+
+    scrollBtn.onclick = () => {
+      parent.postMessage("scrollToTop", "*");
+    };
+  </script>
+</body>
+</html>
