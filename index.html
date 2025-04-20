@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nach oben Button</title>
   <style>
     html, body {
+      height: 200vh; /* Damit wir scrollen können */
       margin: 0;
-      padding: 0;
-      background: transparent;
+      background: linear-gradient(#fff, #ccc);
     }
 
-    #scrollTopBtn {
+    #scrollButton {
       position: fixed;
-      bottom: 0;
-      right: 0;
-      margin: 20px;
-      z-index: 9999;
+      bottom: 20px;
+      right: 20px;
       background-color: #e0e0e0;
       border: none;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-      display: none;
-      align-items: center;
+      width: 48px;
+      height: 48px;
+      display: flex;
       justify-content: center;
-      transition: background-color 0.3s ease;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
     }
 
-    #scrollTopBtn:hover {
-      background-color: #cccccc;
+    #scrollButton.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    svg {
+    #scrollButton svg {
       width: 24px;
       height: 24px;
-      fill: white;
+      fill: #333;
     }
   </style>
 </head>
 <body>
-  <button id="scrollTopBtn" title="Nach oben">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 8l-6 6h12z"/>
+
+  <button id="scrollButton" aria-label="Nach oben">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 8l6 6H6z"/>
     </svg>
   </button>
 
   <script>
-    const scrollBtn = document.getElementById("scrollTopBtn");
+    const button = document.getElementById('scrollButton');
 
-    window.addEventListener("message", (event) => {
-      if (event.data === "show") {
-        scrollBtn.style.display = "flex";
-      } else if (event.data === "hide") {
-        scrollBtn.style.display = "none";
-      } else if (event.data === "scrollToTop") {
-        parent.scrollTo({ top: 0, behavior: "smooth" });
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        button.classList.add('visible');
+      } else {
+        button.classList.remove('visible');
       }
     });
 
-    scrollBtn.onclick = () => {
-      parent.postMessage("scrollToTop", "*");
-    };
+    button.addEventListener('click', () => {
+      window.parent.postMessage({ action: 'scrollToTop' }, '*');
+    });
   </script>
 </body>
 </html>
-
