@@ -9,6 +9,7 @@
       height: 200vh; /* Damit wir scrollen können */
       margin: 0;
       background: linear-gradient(#fff, #ccc);
+      font-family: sans-serif;
     }
 
     #scrollButton {
@@ -27,7 +28,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
     }
 
     #scrollButton.visible {
@@ -39,14 +40,22 @@
       width: 24px;
       height: 24px;
       fill: #333;
+      transform: rotate(180deg); /* Jetzt zeigt der Pfeil nach oben */
     }
   </style>
 </head>
 <body>
 
-  <button id="scrollButton" aria-label="Nach oben">
+  <!-- Dummy-Content für Scrollbarkeit -->
+  <main style="padding: 2rem;">
+    <h1>Scroll runter, um den Button zu sehen</h1>
+    <p style="margin-top: 100vh;">Fast da!</p>
+  </main>
+
+  <!-- Nach-oben-Button -->
+  <button id="scrollButton" aria-label="Nach oben scrollen">
     <svg viewBox="0 0 24 24">
-      <path d="M12 8l6 6H6z"/>
+      <path d="M12 8l6 6H6z" />
     </svg>
   </button>
 
@@ -62,7 +71,10 @@
     });
 
     button.addEventListener('click', () => {
-      window.parent.postMessage({ action: 'scrollToTop' }, '*');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
   </script>
 </body>
